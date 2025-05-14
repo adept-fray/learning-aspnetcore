@@ -16,7 +16,12 @@
 <ul>
     @foreach (var task in Model.TaskList)
         {
-    <li>@task</li>
+        <li>
+            @task.Description
+            <form method="post" asp-page-handler="Delete" asp-route-id="@task.Id" style="display:inline">
+                <button type="submit">Delete</button>
+            </form>
+        </li>
         }
 </ul>
 }
