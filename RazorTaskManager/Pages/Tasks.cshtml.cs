@@ -19,7 +19,7 @@ namespace RazorTaskManager.Pages
         public IActionResult OnPost()
         {
             if (!string.IsNullOrEmpty(NewTask))
-                TaskList.Add(NewTask);
+                _taskList.Add(NewTask);
 
             return RedirectToPage();
         }
