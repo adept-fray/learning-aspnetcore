@@ -1,0 +1,26 @@
+﻿@page
+@model RazorTaskManager.Pages.TasksModel
+@{
+    ViewData["Title"] = "Task Manager";
+}
+
+<h1>Task Manager</h1>
+
+<form method="post">
+    <input type="text" asp-for="NewTask" placeholder="Enter new task" required />
+    <button type="submit">Add Task</button>
+</form>
+
+@if (Model.TaskList.Count > 0)
+{
+<ul>
+    @foreach (var task in Model.TaskList)
+        {
+    <li>@task</li>
+        }
+</ul>
+}
+else
+{
+<p>No tasks yet.</p>
+}
