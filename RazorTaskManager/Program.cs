@@ -1,7 +1,13 @@
+using RazorTaskManager.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddHttpClient<TaskService>(client =>
+{
+    client.BaseAddress = new Uri("http://localhost:5089/");
+});
 
 var app = builder.Build();
 

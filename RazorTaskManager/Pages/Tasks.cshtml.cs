@@ -1,42 +1,42 @@
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using RazorTaskManager.Models;
+using RazorTaskManager.Services;
 
 namespace RazorTaskManager.Pages
 {
     public class TasksModel : PageModel
     {
-        private static List<TaskItem> _taskList { get; set; } = new();
-        private static int _nextId = 1;
+        private readonly TaskService _taskService;
 
-        public List<TaskItem> TaskList => _taskList;
+        public TasksModel(TaskService taskService)
+        {
+            _taskService = taskService;
+        }
 
         [BindProperty]
         public string NewTask { get; set; }
+        public List<TaskItem> TaskList { get; set; } = new();
 
-        public void OnGet()
+        public async Task OnGet()
         {
+            TaskList = await _taskService.GetTasksAsync();
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPost()
         {
             if (!string.IsNullOrEmpty(NewTask))
             {
-                _taskList.Add(new TaskItem
-                {
-                    Id = _nextId++,
-                    Description = NewTask
-                });
+                await _taskService.AddTaskAsync(NewTask);
             }
 
             return RedirectToPage();
         }
 
-        public IActionResult OnPostDelete(int id)
+        public async Task<IActionResult> OnPostDelete(int id)
         {
-            var task = _taskList.FirstOrDefault(t => t.Id == id);
-            if (task != null)
-                _taskList.Remove(task);
+            await _taskService.DeleteTaskAsync(id);
 
             return RedirectToPage();
         }
